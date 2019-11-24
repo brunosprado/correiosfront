@@ -46,17 +46,17 @@
           <v-expansion-panels fluid fill-height>
             <v-expansion-panel v-for="(item,i) in prod" :key="i">
               <v-expansion-panel-header>
-                <v-col justify-self="end">{{ prod[i].code }}</v-col>
-                <v-col justify-self="end">{{ prod[i].name }}</v-col>
-                <v-col justify-self="end">{{ receba[i].localState }}</v-col>
-                <v-col justify-self="end">{{ receba[i].description }}</v-col>
+                <v-col>{{prod[i].code}}</v-col>
+                <v-col>{{prod[i].product}}</v-col>
+                <v-col>{{receba[i].data[0].localState}}</v-col>
+                <v-col>{{receba[i].data[0].description}}</v-col>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <ul v-for="(items,index) in prod" :key="index">
-                  <li>Data: {{ receba[index].date }}</li>
-                  <li>Horário: {{ receba[index].time }}</li>
-                  <li>Localização: {{ receba[index].localState }}</li>
-                  <li>Descrição: {{ receba[index].description }}</li>
+                <ul v-for="(items,index) in receba[i].data" :key="index">
+                  <li>Data: {{ receba[i].data[index].date }}</li>
+                  <li>Horário: {{ receba[i].data[index].time }}</li>
+                  <li>Localização {{ receba[i].data[index].localState }}</li>
+                  <li>Descrição: {{ receba[i].data[index].description }}</li>
                   <br />
                 </ul>
               </v-expansion-panel-content>
@@ -82,10 +82,10 @@ export default {
       this.prod.push({ code: this.xd, name: this.tst });
     },
     acc() {
-      for (let index = 0; index < this.prod.length; index++) {
-        const element = this.prod[index];
+      for (let index = 0; index < this.tracking.length; index++) {
+        const element = this.tracking[index];
         Code.listar(element.code).then(resposta => {
-          this.receba = resposta.data;
+          this.receba[index] = resposta;
         });
       }
     }
